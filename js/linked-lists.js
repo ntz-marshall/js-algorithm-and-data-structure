@@ -77,18 +77,37 @@ function LinkedList() {
 
     this.remove = function(element) {
         // Remove o elemento 'element'
+        var index = this.indexOf(element)
+        return this.removeAt(index)
     }
 
     this.indexOf = function(element) {
         // Retorna a posição do elemento
+        var current = head,
+        index = 0
+
+        while (current) {
+            if (element === current.element) {
+                return index
+            }
+            index++
+            current = current.next
+        }
+        return - 1 
     }
 
     this.isEmpty = function() {
         // Retorna se está vazia ou não a instância
+        return length === 0
     }
 
     this.size = function() {
         // Retorna o tamanho da instância
+        return length
+    }
+
+    this.getHead = function () {
+        return head
     }
 
     this.toString = function() {
