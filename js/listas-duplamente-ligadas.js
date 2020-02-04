@@ -17,6 +17,7 @@ function DoublyLinkedList() {
         
         if (head === null) {
             head = node
+            tail = node
         } else {
             current = head
 
@@ -24,28 +25,41 @@ function DoublyLinkedList() {
                 current = current.next
             }
             current.next = node
+            tail = node
         }
         length++
     }
 
     this.insert = function(position, element) {
-        // Adiciona um elemento em uma posição específica
-        if (position > 0 && position <=length) {
+        if (position >= 0 && position <= length) {
             var node = new Node(element),
             current = head,
             previous,
             index = 0
 
             if (position === 0) {
-                node.next = current
-                head = node
+                if (!head) {
+                    head = node
+                    tail = node
+                } else {
+                    node.next = current
+                    current.prev = node
+                    head = node
+                }
+            } else if (position === length) {
+                current = tail
+                current.next = node
+                node.prev = current
+                tail = node
             } else {
-                while (index++ < position) {
+                while (index++ <position) {
                     previous = current
                     current = current.next
                 }
                 node.next = current
                 previous.next = node
+                current.prev = node
+                node.prev = previous
             }
             length++
             return true
@@ -63,12 +77,22 @@ function DoublyLinkedList() {
 
             if (position === 0) {
                 head = current.next
+                if (length === 1) {
+                    tail = null
+                } else {
+                    head.prev = null
+                }
+            } else if (position === length - 1) {
+                current = tail
+                tail = current.prev
+                tail.next = null
             } else {
                 while (index++ < position) {
                     previous = current
                     current = current.next
                 }
                 previous.next = current.next
+                current.next.prev = previous
             }
             length--
             return current.element
@@ -131,8 +155,11 @@ function DoublyLinkedList() {
     }
 }
 
-var potato = new DoublyLinkedList()
-potato.append('João')
-potato.append('José')
-potato.append('Maria')
-potato.print()
+let dll = new DoublyLinkedList()
+dll.append('joão')
+dll.append('josé')
+dll.append('maria')
+dll.insert(0, 'carlos')
+dll.insert(4, 'lucas')
+dll.insert(2, 'ana')
+dll.print()
